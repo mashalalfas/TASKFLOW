@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useTaskFlow } from '../../store/useTaskFlow';
+import useTaskFlow from '../../store/useTaskFlow';
 import ProjectCard from './ProjectCard';
 
 const PRIORITY_ORDER = { High: 0, Med: 1, Low: 2 };

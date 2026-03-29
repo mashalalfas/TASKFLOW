@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useTaskFlow } from '../../store/useTaskFlow';
+import useTaskFlow from '../../store/useTaskFlow';
 
 export default function ArchiveManager() {
   const { projects, stages, bulkArchiveOldProjects } = useTaskFlow();

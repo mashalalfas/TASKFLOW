@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useTaskFlow } from '../../store/useTaskFlow';
+import useTaskFlow from '../../store/useTaskFlow';
 import { canEditStages } from '../../utils/billingHelpers';
 
 const PASTEL_COLORS = [

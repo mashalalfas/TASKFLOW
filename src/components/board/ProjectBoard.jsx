@@ -1,4 +1,4 @@
-import { useTaskFlow } from '../../store/useTaskFlow';
+import useTaskFlow from '../../store/useTaskFlow';
 import StageColumn from './StageColumn';
 
 export default function ProjectBoard() {

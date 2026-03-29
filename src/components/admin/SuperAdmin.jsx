@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../lib/authContext';
-import { useTaskFlow } from '../../store/useTaskFlow';
+import useTaskFlow from '../../store/useTaskFlow';
 
 export default function SuperAdmin() {
   const { user } = useAuth();

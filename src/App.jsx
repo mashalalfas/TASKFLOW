@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { useTaskFlow } from './store/useTaskFlow';
+import useTaskFlow from './store/useTaskFlow';
 import StatusBar from './components/dashboard/StatusBar';
 import ProjectBoard from './components/board/ProjectBoard';
 import Modal from './components/ui/Modal';

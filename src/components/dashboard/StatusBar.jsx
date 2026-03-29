@@ -1,4 +1,4 @@
-import { useTaskFlow } from '../../store/useTaskFlow';
+import useTaskFlow from '../../store/useTaskFlow';
 import { checkStale } from '../../utils/dateHelpers';
 
 export default function StatusBar() {

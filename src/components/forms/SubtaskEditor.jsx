@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useTaskFlow } from '../../store/useTaskFlow';
+import useTaskFlow from '../../store/useTaskFlow';
 
 export default function SubtaskEditor({ projectId }) {
   const { projects, updateSubtask, addSubtask } = useTaskFlow();

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useTaskFlow } from '../../store/useTaskFlow';
+import useTaskFlow from '../../store/useTaskFlow';
 import { canAddProject } from '../../utils/billingHelpers';
 
 export default function AddProjectForm({ onClose, plan = 'basic' }) {

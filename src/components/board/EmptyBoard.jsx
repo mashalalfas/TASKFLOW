@@ -1,4 +1,4 @@
-import { useTaskFlow } from '../../store/useTaskFlow';
+import useTaskFlow from '../../store/useTaskFlow';
 import BulbIcon from '../icons/BulbIcon';
 
 export default function EmptyBoard() {

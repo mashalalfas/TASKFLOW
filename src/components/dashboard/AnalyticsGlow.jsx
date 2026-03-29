@@ -1,4 +1,4 @@
-import { useTaskFlow } from '../../store/useTaskFlow';
+import useTaskFlow from '../../store/useTaskFlow';
 
 export default function AnalyticsGlow() {
   const { projects, stages } = useTaskFlow();
