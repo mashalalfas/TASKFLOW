@@ -8,7 +8,7 @@ export default function ProjectBoard() {
     <div
       className="w-screen h-screen overflow-x-auto overflow-y-hidden"
       style={{
-        background: 'radial-gradient(circle at 50% 0%, #161618, #0A0A0C)',
+        background: 'radial-gradient(circle at 50% 0%, #131620, #0d0f14)',
       }}
     >
       <div className="flex gap-6 p-6 min-w-min h-full">

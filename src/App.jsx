@@ -34,28 +34,62 @@ export default function App() {
  // ... (Keep your imports and logic at the top the same)
 
   return (
-    /* This main wrapper now controls the background for the ENTIRE page */
     <div className={`min-h-screen w-screen transition-colors duration-500 overflow-hidden flex flex-col
-      ${darkMode ? 'bg-[#020617] text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
-      
-      {/* 1. STATUS BAR & TOGGLE CONTAINER */}
-      <header className="fixed top-0 w-full z-[60] flex items-center justify-between px-6 py-3 bg-white/5 dark:bg-black/20 backdrop-blur-md border-b border-slate-200 dark:border-white/10">
-        <div className="flex items-center gap-4">
-          <h1 className="font-black tracking-tighter text-xl italic">TaskFlow</h1>
-          <StatusBar />
+      ${darkMode ? 'text-slate-100' : 'bg-slate-50 text-slate-900'}`}
+      style={darkMode ? { backgroundColor: '#0d0f14' } : {}}
+    >
+
+      {/* SINGLE HEADER — logo | stats | toggle */}
+      <header
+        className="fixed top-0 w-full z-[60] flex items-center justify-between px-6 py-3 backdrop-blur-md border-b"
+        style={{
+          backgroundColor: darkMode ? 'rgba(13,15,20,0.85)' : 'rgba(255,255,255,0.85)',
+          borderColor: darkMode ? '#1e2330' : '#e2e8f0',
+        }}
+      >
+        {/* LEFT: Logo */}
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <div
+            className="w-8 h-8 rounded-lg flex items-center justify-center font-black text-sm"
+            style={{
+              backgroundColor: 'rgba(124,106,247,0.15)',
+              border: '1px solid rgba(124,106,247,0.35)',
+              color: '#7c6af7',
+            }}
+          >
+            TF
+          </div>
+          <h1
+            className="font-black tracking-tighter text-lg select-none"
+            style={{ color: darkMode ? '#c8d0e8' : '#1e293b' }}
+          >
+            TaskFlow
+          </h1>
         </div>
 
-        {/* Improved Toggle Switch - No more overlapping! */}
-        <div className="flex items-center gap-3">
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60">
+        {/* CENTER: Stats from StatusBar */}
+        <StatusBar />
+
+        {/* RIGHT: Theme toggle */}
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <span
+            className="text-[10px] font-black uppercase tracking-[0.2em]"
+            style={{ color: '#5c6480' }}
+          >
             {darkMode ? 'Midnight' : 'Daylight'}
           </span>
-          <button 
+          <button
             onClick={() => setDarkMode(!darkMode)}
-            className="w-11 h-6 rounded-full bg-slate-300 dark:bg-slate-800 relative transition-all border border-slate-400/20 dark:border-white/10"
+            className="w-11 h-6 rounded-full relative transition-all"
+            style={{
+              backgroundColor: darkMode ? '#1e2330' : '#cbd5e1',
+              border: '1px solid ' + (darkMode ? '#2a3045' : '#94a3b8'),
+            }}
           >
-            <div className={`absolute top-1 w-4 h-4 rounded-full transition-all duration-500 shadow-sm 
-              ${darkMode ? 'left-6 bg-sky-400' : 'left-1 bg-orange-400'}`} 
+            <div
+              className={`absolute top-1 w-4 h-4 rounded-full transition-all duration-500 shadow-sm
+                ${darkMode ? 'left-6' : 'left-1'}`}
+              style={{ backgroundColor: darkMode ? '#7c6af7' : '#f7a26a' }}
             />
           </button>
         </div>

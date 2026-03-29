@@ -2,10 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Design Token Variables (from Sample of Colors palette) ── */
+:root {
+  --tf-bg:            #0d0f14;
+  --tf-surface:       #131620;
+  --tf-surface-alt:   #0a0c10;
+  --tf-border:        #1e2330;
+  --tf-border-bright: #2a3045;
+  --tf-text:          #c8d0e8;
+  --tf-muted:         #5c6480;
+  --tf-purple:        #7c6af7;
+  --tf-teal:          #00d4aa;
+  --tf-orange:        #f7a26a;
+  --tf-red:           #f76a6a;
+}
+
+/* ── Subtle grid texture (like Sample) ── */
+.dark body,
+html.dark {
+  background-image:
+    linear-gradient(rgba(124,106,247,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124,106,247,0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
 /* Selection Color */
 ::selection {
-  background-color: #B2F2BB;
-  color: #0A0A0C;
+  background-color: rgba(124,106,247,0.35);
+  color: #eef0f8;
 }
 
 /* Scrollbar Styling */
