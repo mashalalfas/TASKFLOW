@@ -21,7 +21,12 @@ export default function ProjectCard({ project }) {
       layout
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-4 rounded-xl border mb-3 bg-white dark:bg-navy-800 border-slate-200 dark:border-white/5 shadow-sm hover:shadow-md transition-shadow"
+      draggable
+      onDragStart={e => {
+        e.dataTransfer.setData('projectId', project.id);
+        e.dataTransfer.effectAllowed = 'move';
+      }}
+      className="p-4 rounded-xl border mb-3 bg-white dark:bg-navy-800 border-slate-200 dark:border-white/5 shadow-sm hover:shadow-md transition-shadow cursor-grab active:cursor-grabbing active:opacity-60 active:scale-[0.98]"
     >
       {/* Header: Title and Staff Dropdown */}
       <div className="flex justify-between items-start mb-3">

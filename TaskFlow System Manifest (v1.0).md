@@ -1,8 +1,8 @@
 # 📄 TaskFlow System Manifest
 
-**Project Name:** TaskFlow (Lighting Project Orchestrator)  
-**Version:** 1.0.0  
-**Framework:** Vite + React (ESM)  
+**Project Name:** TaskFlow (Lighting Project Orchestrator)
+**Version:** 1.1.0
+**Framework:** Vite + React (ESM) + Zustand
 **Core Principles:** 200-Line Limit, SVG Isolation, Atomic State Management.
 
 ---
@@ -10,59 +10,73 @@
 ## 🛠 1. Core Architecture
 
 ### **State Engine (`src/store/useTaskFlow.js`)**
-* **Technology:** Zustand + `persist` middleware.
-* **Logic:** * **Auto-Advance:** Moving projects to the next stage upon 100% subtask completion.
-    * **Financial Tracking:** Global selectors for `Won` revenue vs. `Pipeline` potential.
-    * **Schema:** `id`, `title`, `client`, `budget`, `stageId`, `lastUpdate`, `subtasks[]`.
+- **Technology:** Zustand (no persist middleware — state lives in memory, reset on reload).
+- **Schema:** `id`, `title`, `client`, `clientEmail`, `clientPhone`, `projectType`, `location`, `budget`, `priority`, `stageId`, `assignedId`, `deadline`, `description`, `subtasks[]`, `lastUpdate`, `status`.
+- **Actions:** `addProject`, `moveProject`, `assignMember`, `toggleSubtask`, `addSubtask`, `addStage`, `removeStage`, `addTeamMember`, `removeTeamMember`, `setStaleThreshold`.
 
 ### **Logic Utilities (`src/utils/`)**
-* **`dateHelpers.js`**: Contains `checkStale(timestamp)`, a sensor-like function returning `true` after 432,000,000ms (5 days) of inactivity.
-* **`reportGenerator.js`**: Formats project data into clean, export-ready text strings.
+- **`dateHelpers.js`**: `checkStale(timestamp)` → `true` after N days (configurable via `staleThreshold`).
+- **`reportGenerator.js`**: Formats project data into export-ready text strings.
+- **`billingHelpers.js`**: `canAddProject(count, plan)` gate for project limits.
 
 ---
 
-## 🎨 2. Design System (Lumina Dark)
+## 🎨 2. Design System (Lumina Dark v2)
 
-### **Tailwind Configuration (`tailwind.config.js`)**
-* **Base:** `obsidian` (#0A0A0C) and `surface` (#161618).
-* **Glass:** `glass-border` (white/0.08) and `glass-bg` (white/0.03).
-* **Lighting Palette:**
-    * `enquiry-cyan`: #C5F6FA (Cold Lead)
-    * `design-lavender`: #E5DBFF (In-Progress)
-    * `follow-coral`: #FFD8D8 (Stale/Alert)
-    * `mint-bright`: #B2F2BB (Won/Commissioned)
-* **Utilities:** Custom `neon-glow` box-shadows (15px blur).
+### **Color Palette (from `tailwind.config.js` + CSS vars)**
+| Token | Hex | Use |
+|---|---|---|
+| `tf-bg` | `#0d0f14` | Main page background |
+| `tf-surface` | `#131620` | Card / panel background |
+| `tf-border` | `#1e2330` | Borders |
+| `tf-border-bright` | `#2a3045` | Hover borders |
+| `tf-text` | `#c8d0e8` | Primary text |
+| `tf-muted` | `#5c6480` | Labels / secondary text |
+| `tf-purple` | `#7c6af7` | Primary accent, Active, buttons |
+| `tf-teal` | `#00d4aa` | Won / Synced / Success |
+| `tf-orange` | `#f7a26a` | Daylight toggle, Warning |
+| `tf-red` | `#f76a6a` | Stale / Danger |
 
 ---
 
 ## 📂 3. Component Directory
 
 | Component | Path | Function |
-| :--- | :--- | :--- |
-| **ProjectBoard** | `src/components/board/` | Horizontal orchestrator with radial lighting gradient. |
-| **StageColumn** | `src/components/board/` | Vertical pipeline segment with dynamic project counters. |
-| **ProjectCard** | `src/components/board/` | Glassmorphic unit; triggers `coral-pulse` when stale. |
-| **StatusBar** | `src/components/ui/` | Global HUD showing Active Count, Stale Alerts, and Total $. |
-| **Modal** | `src/components/ui/` | Reusable `backdrop-blur-xl` overlay for all forms. |
-| **IconRegistry** | `src/components/icons/` | Isolated SVG components (Bulb, Clock, Check) - **Zero Inlining**. |
+|---|---|---|
+| **App** | `src/App.jsx` | Root layout: header + sidebar + board |
+| **AdminSidebar** | `src/components/sidebar/` | Collapsible left panel (Pipeline / Team / Analytics / Settings) |
+| **PipelinePanel** | `src/components/sidebar/` | Add / remove / view pipeline stages |
+| **TeamPanel** | `src/components/sidebar/` | Add / remove team members |
+| **AnalyticsPanel** | `src/components/sidebar/` | Win rate, pipeline value, stage breakdown |
+| **ProjectBoard** | `src/components/board/` | Horizontal kanban orchestrator |
+| **StageColumn** | `src/components/board/` | Droppable column (HTML5 DnD) |
+| **ProjectCard** | `src/components/board/` | Draggable card (HTML5 DnD) |
+| **StatusBar** | `src/components/dashboard/` | Header stats (Active / Won / Synced) |
+| **AddProjectForm** | `src/components/forms/` | Rich 6-section project creation form |
+| **Modal** | `src/components/ui/` | Reusable `backdrop-blur` overlay |
 
 ---
 
 ## ⚡ 4. Automation Rules
 
-1.  **The Follow-up Sensor:** If a project sits in the "Following" stage for >5 days, the UI physically pulses to alert the sales engineer.
-2.  **The Subtask Chain:** Marking the final subtask as "Done" triggers an immediate `moveStage` action to the next index in the pipeline.
-3.  **Financial Heatmap:** Entering a budget > $10,000 triggers an `amber-warm` glow on the card to denote high-priority "Heavy Lighting" projects.
+1. **Follow-up Sensor:** Project in "Following" stage for >N days triggers `coral-pulse` alert.
+2. **Subtask Chain:** Marking final subtask done auto-advances to next stage (`moveStage`).
+3. **Financial Heatmap:** Budget > AED 10,000 triggers `amber-warm` glow on card.
+4. **Drag & Drop:** Native HTML5 DnD — drag `ProjectCard`, drop onto any `StageColumn`.
 
 ---
 
-## 🚀 5. Deployment Specs
-* **Build Command:** `npm run build` (Vite).
-* **Performance:** Code-splitting configured in `vite.config.js` for sub-2s initial load.
-* **Persistence:** All data is synced to `localStorage` under the key `taskflow-storage`.
+## 🚀 5. Deployment
+
+- **Build:** `npm run build` (Vite)
+- **Host:** Vercel (auto-deploy on `git push` to `main`)
+- **Persistence:** In-memory (Zustand). No localStorage yet — data resets on page reload.
 
 ---
 
-**Manifest Status: [VALIDATED]** *All files under 200 lines. Architecture is modular and scalable.*
+## 📝 6. Changelog
 
-Would you like me to generate a **Phase 2 Roadmap** for features like Multi-User Auth or Google Calendar integration?
+| Version | Date | Changes |
+|---|---|---|
+| 1.1.0 | 2026-03-29 | Admin sidebar (Pipeline/Team/Analytics/Settings), drag-and-drop, rich project form, color palette update (purple-tinted Lumina Dark v2) |
+| 1.0.0 | — | Initial release: Kanban board, StatusBar, basic project form |

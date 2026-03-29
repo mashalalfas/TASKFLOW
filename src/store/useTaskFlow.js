@@ -98,6 +98,21 @@ const useTaskFlow = create((set) => ({
     stages: state.stages.filter(s => s.id !== stageId)
   })),
 
+  // Move project to a different stage (drag and drop)
+  moveProject: (projectId, targetStageId) => set((state) => ({
+    projects: state.projects.map(p =>
+      p.id === projectId ? { ...p, stageId: targetStageId, lastUpdate: Date.now() } : p
+    )
+  })),
+
+  // Team management
+  addTeamMember: (member) => set((state) => ({
+    team: [...state.team, { ...member, id: `m-${Date.now()}` }]
+  })),
+  removeTeamMember: (memberId) => set((state) => ({
+    team: state.team.filter(m => m.id !== memberId)
+  })),
+
   // Function to bulk archive old projects
   bulkArchiveOldProjects: (days) => set((state) => ({
     projects: state.projects.filter(p => p.archived !== true)

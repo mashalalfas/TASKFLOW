@@ -1,11 +1,12 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import useTaskFlow from '../../store/useTaskFlow';
 import ProjectCard from './ProjectCard';
 
 const PRIORITY_ORDER = { High: 0, Med: 1, Low: 2 };
 
 export default function StageColumn({ stageId }) {
-  const { projects, stages } = useTaskFlow();
+  const { projects, stages, moveProject } = useTaskFlow();
+  const [dragOver, setDragOver] = useState(false);
   const stage = stages.find((s) => s.id === stageId);
   const stageProjects = projects.filter((p) => p.stageId === stageId);
 
@@ -23,11 +24,25 @@ export default function StageColumn({ stageId }) {
   }, [stageProjects]);
 
   return (
-    <div className="flex flex-col h-full min-w-80">
+    <div
+      className="flex flex-col h-full min-w-80 transition-all duration-200"
+      onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+      onDragLeave={() => setDragOver(false)}
+      onDrop={e => {
+        e.preventDefault();
+        setDragOver(false);
+        const projectId = e.dataTransfer.getData('projectId');
+        if (projectId) moveProject(projectId, stageId);
+      }}
+      style={dragOver ? { filter: 'brightness(1.12)' } : {}}
+    >
       {/* Dynamic Sticky Header: Swaps between Light Gray and Deep Navy */}
       <div
         className="sticky top-0 z-10 bg-slate-100/80 dark:bg-navy-900/90 backdrop-blur px-4 py-3 mb-4 rounded-lg transition-colors duration-500"
-        style={{ borderBottom: `2px solid ${stage?.color || '#38BDF8'}` }}
+        style={{
+          borderBottom: `2px solid ${stage?.color || '#38BDF8'}`,
+          boxShadow: dragOver ? `0 0 16px ${stage?.color}55` : 'none',
+        }}
       >
         <div className="flex justify-between items-center">
           <h2 className="font-bold text-xs uppercase tracking-widest" style={{ color: stage?.color }}>
