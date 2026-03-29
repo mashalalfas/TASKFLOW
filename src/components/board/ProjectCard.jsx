@@ -8,7 +8,7 @@ const PRIORITY_COLORS = {
   Low: 'bg-slate-500/10 text-slate-500 border-slate-500/20',
 };
 
-export default function ProjectCard({ project }) {
+export default function ProjectCard({ project, onOpen }) {
   const { team, toggleSubtask, assignMember } = useTaskFlow();
   
   const lead = team?.find(m => m.id === project.assignedId);
@@ -26,7 +26,8 @@ export default function ProjectCard({ project }) {
         e.dataTransfer.setData('projectId', project.id);
         e.dataTransfer.effectAllowed = 'move';
       }}
-      className="p-4 rounded-xl border mb-3 bg-white dark:bg-navy-800 border-slate-200 dark:border-white/5 shadow-sm hover:shadow-md transition-shadow cursor-grab active:cursor-grabbing active:opacity-60 active:scale-[0.98]"
+      className="p-4 rounded-xl border mb-3 bg-white dark:bg-navy-800 border-slate-200 dark:border-white/5 shadow-sm hover:shadow-md transition-shadow cursor-grab active:cursor-grabbing active:opacity-60 active:scale-[0.98] group"
+      onClick={onOpen}
     >
       {/* Header: Title and Staff Dropdown */}
       <div className="flex justify-between items-start mb-3">

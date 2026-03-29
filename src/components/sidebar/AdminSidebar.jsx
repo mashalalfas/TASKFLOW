@@ -3,12 +3,14 @@ import PipelinePanel from './PipelinePanel';
 import TeamPanel from './TeamPanel';
 import AnalyticsPanel from './AnalyticsPanel';
 import useTaskFlow from '../../store/useTaskFlow';
+import { PipelineIcon, TeamIcon, AnalyticsIcon, SettingsIcon } from '../icons/SidebarIcons';
+import { THEMES } from '../../utils/themes';
 
 const TABS = [
-  { id: 'pipeline',  icon: '⬡', label: 'Pipeline'  },
-  { id: 'team',      icon: '◎', label: 'Team'       },
-  { id: 'analytics', icon: '◈', label: 'Analytics'  },
-  { id: 'settings',  icon: '⚙', label: 'Settings'   },
+  { id: 'pipeline',  Icon: PipelineIcon,  label: 'Pipeline'  },
+  { id: 'team',      Icon: TeamIcon,      label: 'Team'       },
+  { id: 'analytics', Icon: AnalyticsIcon, label: 'Analytics'  },
+  { id: 'settings',  Icon: SettingsIcon,  label: 'Settings'   },
 ];
 
 export default function AdminSidebar({ darkMode, onToggle }) {
@@ -57,7 +59,7 @@ export default function AdminSidebar({ darkMode, onToggle }) {
               color:           tab === t.id ? s.accent : s.muted,
             }}
           >
-            <span className="text-base flex-shrink-0 w-5 text-center leading-none">{t.icon}</span>
+            <t.Icon size={17} color={tab === t.id ? s.accent : s.muted} />
             {open && <span className="text-[11px] font-black uppercase tracking-wider">{t.label}</span>}
           </button>
         ))}
@@ -83,23 +85,36 @@ export default function AdminSidebar({ darkMode, onToggle }) {
 }
 
 function SettingsSection({ darkMode, staleThreshold, onStaleChange }) {
-  const inp = {
-    backgroundColor: darkMode ? '#131620' : '#e2e8f0',
-    border: '1px solid #1e2330',
-    color: '#c8d0e8',
-  };
+  const { activeTheme, setTheme } = useTaskFlow();
+  const inp = { backgroundColor: darkMode ? '#131620' : '#e2e8f0', border: '1px solid #1e2330', color: '#c8d0e8' };
   return (
-    <div>
-      <SectionTitle>Settings</SectionTitle>
-      <label className="block text-[10px] font-bold uppercase tracking-wider mb-1.5" style={{ color: '#5c6480' }}>
-        Stale alert after (days)
-      </label>
-      <input
-        type="number" min={1} max={30} value={staleThreshold}
-        onChange={e => onStaleChange(Number(e.target.value))}
-        className="w-full px-3 py-2 rounded-lg text-sm font-bold outline-none"
-        style={inp}
-      />
+    <div className="space-y-4">
+      <div>
+        <SectionTitle>Color Theme</SectionTitle>
+        <div className="grid grid-cols-2 gap-1.5">
+          {Object.entries(THEMES).map(([key, t]) => (
+            <button key={key} onClick={() => setTheme(key)}
+              className="flex items-center gap-2 px-2.5 py-2 rounded-lg text-left transition-all"
+              style={{
+                backgroundColor: activeTheme === key ? `${t.accent}20` : (darkMode ? '#131620' : '#f1f5f9'),
+                border: `1px solid ${activeTheme === key ? t.accent : '#1e2330'}`,
+              }}
+            >
+              <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: t.accent }} />
+              <span className="text-[10px] font-black" style={{ color: activeTheme === key ? t.accent : '#5c6480' }}>{t.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+      <div>
+        <SectionTitle>Stale Alert</SectionTitle>
+        <label className="block text-[10px] font-bold uppercase tracking-wider mb-1.5" style={{ color: '#5c6480' }}>
+          Mark as stale after (days)
+        </label>
+        <input type="number" min={1} max={30} value={staleThreshold}
+          onChange={e => onStaleChange(Number(e.target.value))}
+          className="w-full px-3 py-2 rounded-lg text-sm font-bold outline-none" style={inp} />
+      </div>
     </div>
   );
 }

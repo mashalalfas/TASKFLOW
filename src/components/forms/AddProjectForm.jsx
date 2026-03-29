@@ -2,7 +2,7 @@ import { useState } from 'react';
 import useTaskFlow from '../../store/useTaskFlow';
 import { canAddProject } from '../../utils/billingHelpers';
 
-const TYPES     = ['Mosque','Commercial','Residential','Hospitality','Industrial','Landscape','Retail','Other'];
+const TYPES     = ['Project','Contract','Campaign','Service','Proposal','Consultation','Implementation','Research','Maintenance','Other'];
 const PRIORITIES = ['High','Med','Low'];
 const PRI_COLOR  = { High: '#f76a6a', Med: '#7c6af7', Low: '#5c6480' };
 

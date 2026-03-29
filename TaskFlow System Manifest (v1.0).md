@@ -1,7 +1,7 @@
 # 📄 TaskFlow System Manifest
 
 **Project Name:** TaskFlow (Lighting Project Orchestrator)
-**Version:** 1.1.0
+**Version:** 1.2.0
 **Framework:** Vite + React (ESM) + Zustand
 **Core Principles:** 200-Line Limit, SVG Isolation, Atomic State Management.
 
@@ -78,5 +78,6 @@
 
 | Version | Date | Changes |
 |---|---|---|
-| 1.1.0 | 2026-03-29 | Admin sidebar (Pipeline/Team/Analytics/Settings), drag-and-drop, rich project form, color palette update (purple-tinted Lumina Dark v2) |
+| 1.2.0 | 2026-03-29 | SVG icon system (SidebarIcons, StageIcons, UIIcons), ProjectDetail edit modal (click any card), bottleneck heatmap in analytics, member performance stats, stage color editing via swatch click, 4 color theme presets (Midnight/Ocean/Ember/Forest), day mode background fixed, "New Enquiry" header button, generalized project types (industry-agnostic), themes.js CSS-var system |
+| 1.1.0 | 2026-03-29 | Admin sidebar (Pipeline/Team/Analytics/Settings), drag-and-drop, rich project form, color palette update |
 | 1.0.0 | — | Initial release: Kanban board, StatusBar, basic project form |
