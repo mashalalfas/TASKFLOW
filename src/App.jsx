@@ -24,6 +24,11 @@ export default function App() {
     }
   }, [darkMode]);
 
+  const handleUpgrade = () => {
+    setUserPlan('pro');
+    // Optional: Add analytics tracking or show a success message here
+  };
+
   if (!isHydrated) return null;
 
  // ... (Keep your imports and logic at the top the same)
