@@ -77,3 +77,33 @@ export const LocationIcon = ({ size, color }) => (
     <circle cx="12" cy="10" r="3"/>
   </I>
 );
+
+export const BellIcon = ({ size, color }) => (
+  <I size={size} color={color}>
+    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+  </I>
+);
+
+export const ClockIcon = ({ size, color }) => (
+  <I size={size} color={color}>
+    <circle cx="12" cy="12" r="10"/>
+    <polyline points="12 6 12 12 16 14"/>
+  </I>
+);
+
+export const AlertTriangleIcon = ({ size, color }) => (
+  <I size={size} color={color}>
+    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+    <line x1="12" y1="9" x2="12" y2="13"/>
+    <line x1="12" y1="17" x2="12.01" y2="17"/>
+  </I>
+);
+
+export const BarChartIcon = ({ size, color }) => (
+  <I size={size} color={color}>
+    <line x1="18" y1="20" x2="18" y2="10"/>
+    <line x1="12" y1="20" x2="12" y2="4"/>
+    <line x1="6"  y1="20" x2="6"  y2="14"/>
+  </I>
+);

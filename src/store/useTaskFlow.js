@@ -43,6 +43,42 @@ const useTaskFlow = create((set) => ({
     },
   ],
 
+  // ── Reminders ────────────────────────────────────────────────────────
+  reminders: [],
+
+  addReminder: ({ projectId, note, dueDate, assignedId }) => set((state) => ({
+    reminders: [...state.reminders, {
+      id: `r-${Date.now()}`,
+      projectId,
+      note,
+      dueDate,        // ISO string e.g. '2026-04-05'
+      assignedId,
+      createdAt: Date.now(),
+      snoozedUntil: null,
+      dismissed: false,
+    }],
+  })),
+
+  dismissReminder: (reminderId) => set((state) => ({
+    reminders: state.reminders.map(r =>
+      r.id === reminderId ? { ...r, dismissed: true } : r
+    ),
+  })),
+
+  snoozeReminder: (reminderId, days) => set((state) => {
+    const until = new Date();
+    until.setDate(until.getDate() + days);
+    return {
+      reminders: state.reminders.map(r =>
+        r.id === reminderId ? { ...r, snoozedUntil: until.toISOString().slice(0, 10) } : r
+      ),
+    };
+  }),
+
+  deleteReminder: (reminderId) => set((state) => ({
+    reminders: state.reminders.filter(r => r.id !== reminderId),
+  })),
+
   // ── Theme ────────────────────────────────────────────────────────────
   activeTheme: 'midnight',
   setTheme: (name) => set(() => ({ activeTheme: name })),

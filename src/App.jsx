@@ -8,8 +8,11 @@ import AddProjectForm from './components/forms/AddProjectForm';
 import UpgradePrompt from './components/ui/UpgradePrompt';
 import AdminSidebar from './components/sidebar/AdminSidebar';
 import ProjectDetail from './components/board/ProjectDetail';
+import AnalyticsPage from './pages/AnalyticsPage';
+import RemindersPage from './pages/RemindersPage';
+import OverduePage from './pages/OverduePage';
 import { EnquiryIcon } from './components/icons/UIIcons';
-import { applyTheme } from './utils/themes';
+import { applyTheme, applyLightMode } from './utils/themes';
 
 export default function App() {
   const [showAddProject,  setShowAddProject]  = useState(false);
@@ -18,6 +21,7 @@ export default function App() {
   const [darkMode,        setDarkMode]        = useState(true);
   const [sidebarOpen,     setSidebarOpen]     = useState(true);
   const [userPlan,        setUserPlan]        = useState('basic');
+  const [view,            setView]            = useState('board'); // 'board' | 'analytics' | 'reminders' | 'overdue'
   const { projects, activeTheme } = useTaskFlow();
 
   useEffect(() => { setIsHydrated(true); }, []);
@@ -27,8 +31,12 @@ export default function App() {
   }, [darkMode]);
 
   useEffect(() => {
-    applyTheme(activeTheme);
-  }, [activeTheme]);
+    if (darkMode) {
+      applyTheme(activeTheme);
+    } else {
+      applyLightMode(activeTheme);
+    }
+  }, [darkMode, activeTheme]);
 
   if (!isHydrated) return null;
 
@@ -37,6 +45,9 @@ export default function App() {
   const bgStyle = darkMode
     ? { backgroundColor: 'var(--tf-bg, #0d0f14)' }
     : { backgroundColor: '#f8fafc' };
+
+  // View title for header breadcrumb
+  const viewLabel = { board: null, analytics: 'Analytics', reminders: 'Reminders', overdue: 'Overdue' }[view];
 
   return (
     <div className={`min-h-screen w-screen transition-colors duration-500 overflow-hidden flex flex-col ${darkMode ? 'text-slate-100' : 'text-slate-900'}`} style={bgStyle}>
@@ -49,15 +60,27 @@ export default function App() {
           borderColor:     darkMode ? 'var(--tf-border,#1e2330)' : '#e2e8f0',
         }}
       >
-        {/* Left: Logo */}
+        {/* Left: Logo + optional breadcrumb */}
         <div className="flex items-center gap-3 flex-shrink-0">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center font-black text-sm"
-            style={{ backgroundColor: 'rgba(124,106,247,0.15)', border: '1px solid rgba(124,106,247,0.35)', color: 'var(--tf-accent,#7c6af7)' }}>
-            TF
-          </div>
-          <h1 className="font-black tracking-tighter text-lg select-none" style={{ color: darkMode ? 'var(--tf-text,#c8d0e8)' : '#1e293b' }}>
-            TaskFlow
-          </h1>
+          <button
+            onClick={() => setView('board')}
+            className="flex items-center gap-3 hover:opacity-80 transition-all"
+          >
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center font-black text-sm"
+              style={{ backgroundColor: 'rgba(124,106,247,0.15)', border: '1px solid rgba(124,106,247,0.35)', color: 'var(--tf-accent,#7c6af7)' }}>
+              TF
+            </div>
+            <h1 className="font-black tracking-tighter text-lg select-none" style={{ color: darkMode ? 'var(--tf-text,#c8d0e8)' : '#1e293b' }}>
+              TaskFlow
+            </h1>
+          </button>
+          {viewLabel && (
+            <>
+              <span style={{ color: 'var(--tf-muted,#5c6480)' }}>›</span>
+              <span className="text-[11px] font-black uppercase tracking-wider"
+                style={{ color: 'var(--tf-accent,#7c6af7)' }}>{viewLabel}</span>
+            </>
+          )}
         </div>
 
         {/* Center: Stats */}
@@ -93,14 +116,24 @@ export default function App() {
       </header>
 
       {/* ── SIDEBAR ── */}
-      <AdminSidebar darkMode={darkMode} onToggle={setSidebarOpen} />
+      <AdminSidebar
+        darkMode={darkMode}
+        onToggle={setSidebarOpen}
+        onNavigate={setView}
+        currentView={view}
+      />
 
-      {/* ── BOARD ── */}
-      <main className={`flex-1 pt-14 transition-all duration-300 overflow-x-auto custom-scrollbar ${mainLeft}`}>
-        <ProjectBoard darkMode={darkMode} onOpenProject={setSelectedProject} />
+      {/* ── MAIN CONTENT ── */}
+      <main className={`flex-1 pt-14 transition-all duration-300 overflow-y-auto custom-scrollbar ${mainLeft}`}>
+        {view === 'board'     && <ProjectBoard darkMode={darkMode} onOpenProject={setSelectedProject} />}
+        {view === 'analytics' && <AnalyticsPage darkMode={darkMode} />}
+        {view === 'reminders' && <RemindersPage darkMode={darkMode} />}
+        {view === 'overdue'   && <OverduePage darkMode={darkMode} onOpenProject={setSelectedProject} />}
       </main>
 
-      <UpgradePrompt activeProjects={projects.length} plan={userPlan} onUpgradeClick={() => setUserPlan('pro')} />
+      {view === 'board' && (
+        <UpgradePrompt activeProjects={projects.length} plan={userPlan} onUpgradeClick={() => setUserPlan('pro')} />
+      )}
 
       {/* ── PROJECT DETAIL MODAL ── */}
       <AnimatePresence>

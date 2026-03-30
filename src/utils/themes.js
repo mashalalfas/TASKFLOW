@@ -39,3 +39,20 @@ export function applyTheme(themeName) {
   r.setProperty('--tf-text',          t.text);
   r.setProperty('--tf-muted',         t.muted);
 }
+
+export function applyLightMode(themeName) {
+  const t = THEMES[themeName] || THEMES.midnight;
+  const r = document.documentElement.style;
+  // Keep the accent palette from the selected theme
+  r.setProperty('--tf-accent',        t.accent);
+  r.setProperty('--tf-teal',          t.teal);
+  r.setProperty('--tf-orange',        t.orange);
+  r.setProperty('--tf-red',           t.red);
+  // Override all surface/text vars with light values
+  r.setProperty('--tf-bg',            '#f8fafc');
+  r.setProperty('--tf-surface',       '#ffffff');
+  r.setProperty('--tf-border',        '#e2e8f0');
+  r.setProperty('--tf-border-bright', '#cbd5e1');
+  r.setProperty('--tf-text',          '#1e293b');
+  r.setProperty('--tf-muted',         '#64748b');
+}
